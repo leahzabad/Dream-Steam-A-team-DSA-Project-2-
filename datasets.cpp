@@ -10,6 +10,21 @@
 
 using namespace  std;
 
+struct game {
+    int appID;
+    string name;
+    vector<string> genres;
+    vector<string> catagories;
+
+    game() {
+        appID = 0;
+        name = "NULL";
+        genres = {};
+        catagories = {};
+    }
+};
+
+
 vector<vector<string>> loadCSV(const string& path) {
     vector<vector<string>> data;
     ifstream fin(path);
@@ -53,3 +68,13 @@ vector<vector<string>> loadCSV(const string& path) {
     return data;
 }
 
+vector<game> loadGamelist(vector<vector<string>> s) {
+    vector<game> gameslist;
+    for (int i = 1; i < s.size(); i++) {
+        game g;
+        g.appID = stoi(s[i][0]);
+        g.name = s[i][1];
+        gameslist.push_back(g);
+    }
+    return gameslist;
+}
