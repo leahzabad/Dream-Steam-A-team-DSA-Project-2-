@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.3)
+cmake_minimum_required(VERSION 4.1.2)
 project(Dream_Steam_A_team_DSA_Project_2_)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -11,7 +11,10 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         mergesort.cpp
         quicksort.cpp
         userinterface.cpp
-        userinterface.h)
+        userinterface.h
+        datasets.h)
+
+add_compile_definitions(DATA_DIR="${CMAKE_SOURCE_DIR}/datafiles/")
 
 include(FetchContent)
 
