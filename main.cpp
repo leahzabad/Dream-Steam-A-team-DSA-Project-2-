@@ -7,6 +7,7 @@
 #include <sstream>
 
 using namespace std;
+#include <SFML/Graphics.hpp>
 
 int main() {
     auto s = loadCSV(string(DATA_DIR) + "applications.csv");
@@ -26,6 +27,5 @@ int main() {
             cout << s[i][0] << ", " << s[i][1] << "\n";
         }
     }
-
     return 0;
 }

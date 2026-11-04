@@ -1,4 +1,4 @@
-// need to be able to parse through kaggle dataset to get all games
+// need to be able to parse through kaggle datafiles to get all games
 //then ask for steam ID to get their games
 // then compare genres
 
