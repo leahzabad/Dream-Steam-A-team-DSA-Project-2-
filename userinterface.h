@@ -6,6 +6,7 @@
 #define DREAM_STEAM_A_TEAM_DSA_PROJECT_2__USERINTERFACE_H
 #include <map>
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 
 
 class Screen {

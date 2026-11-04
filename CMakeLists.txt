@@ -15,7 +15,7 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         datasets.h
 )
 
-# GUI STUFF
+#SFML STUFF
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 
 target_link_libraries(Dream_Steam_A_team_DSA_Project_2_
@@ -29,9 +29,24 @@ file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 add_compile_definitions(DATA_DIR="${CMAKE_SOURCE_DIR}/datafiles/")
 
-# TESTCASES
+#TGUI STUFF
 include(FetchContent)
 
+set(BUILD_SHARED_LIBS OFF)
+set(TGUI_BACKEND SFML_GRAPHICS)
+
+FetchContent_Declare(
+        TGUI
+        GIT_REPOSITORY https://github.com/texus/TGUI
+        GIT_TAG v1.13.0
+)
+FetchContent_MakeAvailable(TGUI)
+
+target_link_libraries(Dream_Steam_A_team_DSA_Project_2_ PRIVATE TGUI::TGUI)
+
+
+
+# TESTCASES
 FetchContent_Declare(
         Catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
