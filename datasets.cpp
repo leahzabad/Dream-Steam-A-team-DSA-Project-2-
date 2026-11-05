@@ -7,11 +7,12 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <datasets.h>
 
 using namespace  std;
 
-vector<vector<string>> loadCSV(const string& path) {
-    vector<vector<string>> data;
+vector<Game> loadCSV(const string& path) {
+    vector<Game> data;
     ifstream fin(path);
     if (!fin) { cerr << "Could not open " << path << "\n"; return data; }
 
@@ -35,9 +36,17 @@ vector<vector<string>> loadCSV(const string& path) {
             cell.clear();
         }
         else if (c == '\n') {
-            if (!(row.empty() && cell.empty())) {
+            if (!(row.empty() && cell.empty()) && row[0] != "appid") {
                 row.push_back(cell);
-                data.push_back(row);
+
+                Game game{stoi(row[0]),
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    stoi(row[5])};
+
+                data.push_back(game);
             }
             row.clear();
             cell.clear();
@@ -48,7 +57,8 @@ vector<vector<string>> loadCSV(const string& path) {
     }
     if (!row.empty() || !cell.empty()) {
         row.push_back(cell);
-        data.push_back(row);
+        Game game{};
+        data.push_back(game);
     }
     return data;
 }

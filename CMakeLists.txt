@@ -13,19 +13,7 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         userinterface.cpp
         userinterface.h
         datasets.h
-)
-
-#SFML STUFF
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
-
-target_link_libraries(Dream_Steam_A_team_DSA_Project_2_
-        PRIVATE
-        SFML::Graphics
-        SFML::Window
-        SFML::System
-)
-
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+        mergesort.h)
 
 add_compile_definitions(DATA_DIR="${CMAKE_SOURCE_DIR}/datafiles/")
 
