@@ -12,7 +12,8 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         quicksort.cpp
         userinterface.cpp
         userinterface.h
-        datasets.h)
+        datasets.h
+        mergesort.h)
 
 add_compile_definitions(DATA_DIR="${CMAKE_SOURCE_DIR}/datafiles/")
 

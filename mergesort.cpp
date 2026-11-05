@@ -1,14 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <datasets.h>
 
 using namespace std;
 
-struct Game {
-    int id;
-    string name;
-    string genre;
-    double score;
-};
+
 void merge(vector<Game>& games, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -63,4 +59,8 @@ void mergeSort(vector<Game>& games, int left, int right) {
         mergeSort(games, mid + 1, right);
         merge(games, left, mid, right);
     }
+}
+
+void mergeSort(vector<Game>& games) {
+    mergeSort(games, 0, games.size() - 1);
 }
