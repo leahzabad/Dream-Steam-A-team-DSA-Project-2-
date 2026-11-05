@@ -8,8 +8,11 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <TGUI/Backend/SFML-Graphics.hpp>
 
 using namespace std;
+#include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 
 int main() {
     auto games = loadCSV(string(DATA_DIR) + "applications.csv");
