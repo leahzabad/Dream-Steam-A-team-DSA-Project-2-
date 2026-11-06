@@ -4,6 +4,7 @@ project(Dream_Steam_A_team_DSA_Project_2_)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(Dream_Steam_A_team_DSA_Project_2_
         datasets.cpp
@@ -15,12 +16,29 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         datasets.h
         mergesort.h)
 
+target_include_directories(
+        Dream_Steam_A_team_DSA_Project_2_
+        PRIVATE
+        ${CMAKE_SOURCE_DIR}
+)
+
 add_compile_definitions(DATA_DIR="${CMAKE_SOURCE_DIR}/datafiles/")
 
-#TGUI STUFF
 include(FetchContent)
 
 set(BUILD_SHARED_LIBS OFF)
+
+#SFML STUFF
+FetchContent_Declare(
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 3.0.2
+        GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(SFML)
+
+#TGUI STUFF
 set(TGUI_BACKEND SFML_GRAPHICS)
 
 FetchContent_Declare(
