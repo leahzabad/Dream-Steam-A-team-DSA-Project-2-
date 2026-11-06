@@ -9,6 +9,9 @@ using namespace std;
 // TEMPORARY STUFF <<<
 struct Game {
     string name;
+    int id;
+    string genre;
+    double score;
 };
 
 vector<Game> loadAllSteamGames() {
