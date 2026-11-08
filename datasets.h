@@ -26,5 +26,6 @@ struct Game {
 };
 
 vector<Game> loadCSV(const string& path);
+std::vector<std::string> loadMostSimilarGames(std::vector<Game> allGames, string genre, string category, string platform);
 
 #endif //DREAM_STEAM_A_TEAM_DSA_PROJECT_2__DATASETS_H

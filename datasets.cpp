@@ -8,6 +8,8 @@
 #include <vector>
 #include <sstream>
 #include <datasets.h>
+#include <cmath>
+#include "mergesort.h"
 
 using namespace  std;
 
@@ -62,4 +64,21 @@ vector<Game> loadCSV(const string& path) {
     }
     return data;
 }
+
+std::vector<std::string> loadMostSimilarGames(std::vector<Game> games, string genre, string category, string platform) {
+    for (Game& game : games) {
+        double score = game.categories.find(category) == string::npos ? 0 : 15;
+        score+=game.genres.find(genre) == string::npos ? 0 : 15;
+        score+=game.platforms.find(platform) == string::npos ? 0 : 10;
+        score+= ::log(game.recommendations);
+        game.score = score;
+    }
+
+    mergeSort(games);
+    std::vector<std::string> mostSimilarGames;
+    for (int i = 0; i < 20; i++) {
+        mostSimilarGames.push_back(games[i].name);
+    }
+    return mostSimilarGames;
+};
 
