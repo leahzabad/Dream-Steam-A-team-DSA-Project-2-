@@ -51,4 +51,7 @@ public:
 
 };
 
+std::vector<tgui::String> getAllGenres();
+std::vector<tgui::String> getAllCategories();
+
 #endif //DREAM_STEAM_A_TEAM_DSA_PROJECT_2__USERINTERFACE_H

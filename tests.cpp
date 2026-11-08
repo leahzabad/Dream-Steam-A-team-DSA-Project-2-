@@ -3,78 +3,134 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include "datasets.h"
+#include "mergesort.h"
+#include <fstream>
+#include "userinterface.h"
+#include "quicksort.h"
 
 using namespace std;
 
-// TEMPORARY STUFF <<<
-struct Game {
-    string name;
-    int id;
-    string genre;
-    double score;
-};
-
-vector<Game> loadAllSteamGames() {
-    vector<Game> games;
-    Game game1{"game1"};
-    Game game2{"game2"};
-    Game game3{"game3"};
-    games.push_back(game1);
-    return games;
+//check that all information remains with the correct game
+void checkGame(const Game& actual, const Game& expected) {
+    REQUIRE(actual.id == expected.id);
+    REQUIRE(actual.name == expected.name);
+    REQUIRE(actual.genres == expected.genres);
+    REQUIRE(actual.categories == expected.categories);
+    REQUIRE(actual.platforms == expected.platforms);
+    REQUIRE(actual.recommendations == expected.recommendations);
+    REQUIRE(actual.score == expected.score);
 }
 
-vector<Game> loadUsersGames() {
-    vector<Game> games;
-    Game game1{"game1"};
-    games.push_back(game1);
-    return games;
-}
-
-vector<Game> getRecommendations() {
-    vector<Game> games;
-    Game game2{"game2"};
-    games.push_back(game2);
-    return games;
-}
-
-vector<Game> quickSort(vector<Game> games) {
-     return games;
- }
-
-vector<Game> mergeSort(vector<Game> games) {
-    return games;
-}
-// >>> TEMPORARY STUFF
+//check our merge sort vs actual C++ sorting alg??
 
 TEST_CASE("load all steam games", "[data]") {
-    vector<Game> games = loadAllSteamGames();
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
 
     REQUIRE(!games.empty());
+
+    Game& game = games.front();
+
+    REQUIRE(game.id > -1);
+    REQUIRE(!game.name.empty());
+    REQUIRE(!game.genres.empty());
+    REQUIRE(!game.categories.empty());
+    REQUIRE(!game.platforms.empty());
+    REQUIRE(game.recommendations > -1);
 }
+
+TEST_CASE("load all genres", "[data]") {
+    std::vector<tgui::String> genres = getAllGenres();
+
+    REQUIRE(!genres.empty());
+
+    tgui::String& genre = genres.front();
+
+    REQUIRE(!genre.empty());
+}
+
+TEST_CASE("load all categories", "[data]") {
+    std::vector<tgui::String> categories = getAllCategories();
+
+    REQUIRE(!categories.empty());
+
+    tgui::String& category = categories.front();
+
+    REQUIRE(!category.empty());
+}
+
 
 TEST_CASE("check recommendations", "[data]") {
-    vector<Game> usersGames = loadUsersGames();
-    vector<Game> recommendedGames = getRecommendations();
-    vector<Game> intersection;
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+    string category, genre, platform;
+    vector<string> recommendedGames = loadMostSimilarGames(games, "", "", "");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
 
-    auto byName = [](const Game& a, const Game& b) {
-        return a.name < b.name;
-    };
+    recommendedGames = loadMostSimilarGames(games, "Action", "Family Sharing", "windows");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
 
-    std::sort(usersGames.begin(), usersGames.end(), byName);
-    std::sort(recommendedGames.begin(), recommendedGames.end(), byName);
+    recommendedGames = loadMostSimilarGames(games, "Action", "", "");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
 
-    std::set_intersection(
-            usersGames.begin(), usersGames.end(),
-            recommendedGames.begin(), recommendedGames.end(),
-            std::back_inserter(intersection),
-            byName
-        );
+    recommendedGames = loadMostSimilarGames(games, "", "", "windows");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
 
-    REQUIRE(intersection.empty());
+    recommendedGames = loadMostSimilarGames(games, "Action", "", "windows");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
+
+    recommendedGames = loadMostSimilarGames(games, "Action", "Family Sharing", "");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
+
+    recommendedGames = loadMostSimilarGames(games, "", "Family Sharing", "");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
+
+    recommendedGames = loadMostSimilarGames(games, "", "Family Sharing", "windows");
+    REQUIRE(!recommendedGames.empty());
+    REQUIRE(!recommendedGames.front().empty());
 }
 
-TEST_CASE("test sorting", "[data]") {
-    vector<Game> usersGames = loadUsersGames();
+vector<Game> getGames(){
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+    string category, genre, platform;
+
+    for (Game& game : games) {
+        double score = game.categories.find(category) == string::npos ? 0 : 15;
+        score+=game.genres.find(genre) == string::npos ? 0 : 15;
+        score+=game.platforms.find(platform) == string::npos ? 0 : 10;
+        score+= ::log(game.recommendations);
+        game.score = score;
+    }
+    return games;
+}
+
+
+TEST_CASE("test merge sort", "[sort]") {
+    vector<Game> games = getGames();
+
+    mergeSort(games);
+
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((games[i].score > games[i+1].score) | (games[i].name <= games[i+1].name));
+    }
 
 }
+
+TEST_CASE("test quick sort", "[sort]") {
+    vector<Game> games = getGames();
+
+    quickSort(games);
+
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((games[i].score > games[i+1].score) | (games[i].name <= games[i+1].name));
+    }
+
+}
+
+
