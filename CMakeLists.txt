@@ -14,7 +14,8 @@ add_executable(Dream_Steam_A_team_DSA_Project_2_
         userinterface.cpp
         userinterface.h
         datasets.h
-        mergesort.h)
+        mergesort.h
+        quicksort.h)
 
 target_include_directories(
         Dream_Steam_A_team_DSA_Project_2_
@@ -61,9 +62,19 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(unit_tests tests.cpp)
+add_executable(unit_tests
+        tests.cpp
+        datasets.cpp
+        mergesort.cpp
+        quicksort.cpp
+        userinterface.cpp
+        userinterface.h
+        datasets.h
+        mergesort.h
+        quicksort.h)
 
 target_link_libraries(unit_tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(unit_tests PRIVATE TGUI::TGUI)
 
 enable_testing()
 
