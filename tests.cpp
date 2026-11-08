@@ -8,6 +8,7 @@
 #include <fstream>
 #include "userinterface.h"
 #include "quicksort.h"
+#include <chrono>
 
 using namespace std;
 
@@ -223,6 +224,22 @@ TEST_CASE("test decreasing quick", "[sort]") {
              games[i].name <= games[i + 1].name)
         ));
     }
+}
+
+TEST_CASE("sort times", "[sort]") {
+    vector<Game> games = getGames();
+    auto start = chrono::steady_clock::now();
+    mergeSort(games);
+    auto duration = (chrono::steady_clock::now() - start).count();
+    cout << duration << endl;
+    REQUIRE(duration>0);
+
+    games = getGames();
+    start = chrono::steady_clock::now();
+    quickSort(games);
+    duration = (chrono::steady_clock::now() - start).count();
+    cout << duration << endl;
+    REQUIRE(duration>0);
 }
 
 
