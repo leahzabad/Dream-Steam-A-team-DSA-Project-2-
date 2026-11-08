@@ -116,8 +116,11 @@ TEST_CASE("test merge sort", "[sort]") {
 
     mergeSort(games);
 
-    for (int i = 0; i < games.size()-1; i++) {
-        REQUIRE((games[i].score > games[i+1].score) | (games[i].name <= games[i+1].name));
+    for (int i = 0; i < games.size() - 1; i++) {
+        REQUIRE((
+            (games[i].score > games[i + 1].score) || (games[i].score == games[i + 1].score && games[i].name <= games[i +
+                1].name)
+        ));
     }
 
 }
@@ -128,9 +131,99 @@ TEST_CASE("test quick sort", "[sort]") {
     quickSort(games);
 
     for (int i = 0; i < games.size()-1; i++) {
-        REQUIRE((games[i].score > games[i+1].score) | (games[i].name <= games[i+1].name));
+        REQUIRE((
+            (games[i].score > games[i + 1].score) ||
+            (games[i].score == games[i + 1].score &&
+             games[i].name <= games[i + 1].name)
+        ));
     }
 
 }
+
+TEST_CASE("test empty sorts", "[sort]") {
+    vector<Game> games;
+
+    mergeSort(games);
+    REQUIRE(games.empty());
+    quickSort(games);
+    REQUIRE(games.empty());
+}
+
+TEST_CASE("test increasing merge", "[sort]") {
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+
+    double score = 0.0;
+
+    for (Game& game : games) {
+        game.score = score;
+        score+=1.0;
+    }
+    mergeSort(games);
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((
+            (games[i].score > games[i + 1].score) ||
+            (games[i].score == games[i + 1].score &&
+             games[i].name <= games[i + 1].name)
+        ));
+    }
+}
+
+TEST_CASE("test increasing quick", "[sort]") {
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+
+    double score = 0.0;
+
+    for (Game& game : games) {
+        game.score = score;
+        score+=1.0;
+    }
+    quickSort(games);
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((
+            (games[i].score > games[i + 1].score) ||
+            (games[i].score == games[i + 1].score &&
+             games[i].name <= games[i + 1].name)
+        ));
+    }
+}
+
+TEST_CASE("test decreasing merge", "[sort]") {
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+
+    double score = 0.0;
+
+    for (Game& game : games) {
+        game.score = score;
+        score-=1.0;
+    }
+    mergeSort(games);
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((
+            (games[i].score > games[i + 1].score) ||
+            (games[i].score == games[i + 1].score &&
+             games[i].name <= games[i + 1].name)
+        ));
+    }
+}
+
+TEST_CASE("test decreasing quick", "[sort]") {
+    std::vector<Game> games = loadCSV(string(DATA_DIR) + "all_applications.csv");
+
+    double score = 0.0;
+
+    for (Game& game : games) {
+        game.score = score;
+        score-=1.0;
+    }
+    quickSort(games);
+    for (int i = 0; i < games.size()-1; i++) {
+        REQUIRE((
+            (games[i].score > games[i + 1].score) ||
+            (games[i].score == games[i + 1].score &&
+             games[i].name <= games[i + 1].name)
+        ));
+    }
+}
+
 
 
