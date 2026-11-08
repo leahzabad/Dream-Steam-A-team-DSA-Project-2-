@@ -13,6 +13,7 @@
 using namespace std;
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
+#include "userinterface.h"
 
 int main() {
     auto games = loadCSV(string(DATA_DIR) + "applications.csv");
@@ -49,6 +50,8 @@ int main() {
         cout << game.name << "\t" << game.score << "\n";
     }
 
+
+    loadMain();
 
     return 0;
 }
