@@ -10,6 +10,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 
 void loadMain();
+tgui::TextArea::Ptr drawRecommendedGames(tgui::SFML_GRAPHICS::Gui& g, const std::vector<std::string>& gs);
 
 class TextObject {
     std::string fontfile;
@@ -31,25 +32,6 @@ class TextObject {
 
 };
 
-class GameBio {
-    sf::Sprite coverImage;
-    TextObject description;
-    sf::RectangleShape background;
-
-public:
-    void drawGameBio(sf::RenderWindow &window);
-};
-
-class Button {
-    sf::RectangleShape shape;
-    sf::Text text;
-    sf::Texture buttonTexture;
-
-    public:
-        void drawButton(sf::RenderWindow &window);
-        bool isClicked(sf::Vector2i mousePos);
-};
-
 class DropMenu {
     sf::Vector2f size;
     sf::Vector2f position;
@@ -65,7 +47,7 @@ public:
         options = o;
     }
 
-    void drawDropMenu(tgui::SFML_GRAPHICS::Gui& g);
+  void drawDropMenu(tgui::SFML_GRAPHICS::Gui& g,  std::string& selectedItem, bool&selected);
 
 };
 
