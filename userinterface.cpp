@@ -160,12 +160,12 @@ void loadMain(){
         platformBox.drawDropMenu(g, selectedPlatform, changedSelection);
 
     //SORT ALGORITHM + TIMING
-    DropMenu sortBox({155.f, 30.f}, {370.f, 670.f}, "Sort Algorithm", {"MergeSort", "QuickSort"});
+    DropMenu sortBox({155.f, 30.f}, {370.f, 660.f}, "Sort Algorithm", {"MergeSort", "QuickSort"});
     std::string selectedSort;
     sortBox.drawDropMenu(g, selectedSort, changedSelection);
 
     auto timeLabel = tgui::Label::create("MergeSort: --     QuickSort: --");
-    timeLabel->setPosition({540.f, 674.f});
+    timeLabel->setPosition({540.f, 664.f});
     timeLabel->setTextSize(18);
     timeLabel->getRenderer()->setTextColor(tgui::Color(74, 32, 111));
     g.add(timeLabel);
