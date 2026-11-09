@@ -159,6 +159,25 @@ void loadMain(){
         std::string selectedPlatform;
         platformBox.drawDropMenu(g, selectedPlatform, changedSelection);
 
+    //SORT ALGORITHM + TIMING
+    DropMenu sortBox({155.f, 30.f}, {370.f, 670.f}, "Sort Algorithm", {"MergeSort", "QuickSort"});
+    std::string selectedSort;
+    sortBox.drawDropMenu(g, selectedSort, changedSelection);
+
+    auto timeLabel = tgui::Label::create("MergeSort: --     QuickSort: --");
+    timeLabel->setPosition({540.f, 674.f});
+    timeLabel->setTextSize(18);
+    timeLabel->getRenderer()->setTextColor(tgui::Color(74, 32, 111));
+    g.add(timeLabel);
+
+    double mergeMs = -1, quickMs = -1;
+    auto fmt = [](double ms) {
+        if (ms < 0) return std::string("--");
+        std::ostringstream os;
+        os << std::fixed << std::setprecision(2) << ms << " ms";
+        return os.str();
+    };
+
     //GAME RECOMMENDATIONS
         std::vector<std::string> recommendedGames;
         auto gameText =drawRecommendedGames(g, recommendedGames);
@@ -175,8 +194,12 @@ void loadMain(){
             //updating game recommendations based on drop down selection
             if (changedSelection) {
                 if (!selectedGenre.empty() || !selectedPlatform.empty() || !recommendedGames.empty()) {
-                    auto updatedRecommendedGames =
-                            loadMostSimilarGames(games, selectedGenre, selectedCategory, selectedPlatform);
+                    bool useQuick = (selectedSort == "QuickSort");
+                    double sortMs = 0;
+                    auto updatedRecommendedGames = loadMostSimilarGames(games, selectedGenre, selectedCategory,
+                                                                        selectedPlatform, useQuick, &sortMs);
+                    (useQuick ? quickMs : mergeMs) = sortMs;
+                    timeLabel->setText("MergeSort: " + fmt(mergeMs) + "     QuickSort: " + fmt(quickMs));
 
                     tgui::String text;
 

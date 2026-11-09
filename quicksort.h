@@ -4,6 +4,8 @@
 
 #ifndef DREAM_STEAM_A_TEAM_DSA_PROJECT_2__QUICKSORT_H
 #define DREAM_STEAM_A_TEAM_DSA_PROJECT_2__QUICKSORT_H
-void quickSort(vector<Game>& games);
+
+void quickSort(vector<Game>& games, int low, int high);
+int partition(vector<Game>& games, int low, int high);
 
 #endif //DREAM_STEAM_A_TEAM_DSA_PROJECT_2__QUICKSORT_H

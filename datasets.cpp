@@ -10,6 +10,8 @@
 #include "datasets.h"
 #include <cmath>
 #include "mergesort.h"
+#include "quicksort.h"
+#include <chrono>
 
 using namespace  std;
 
@@ -65,7 +67,7 @@ vector<Game> loadCSV(const string& path) {
     return data;
 }
 
-std::vector<std::string> loadMostSimilarGames(std::vector<Game> games, string genre, string category, string platform) {
+std::vector<std::string> loadMostSimilarGames(std::vector<Game> games, string genre, string category, string platform, bool useQuickSort, double* sortMs) {
     for (Game& game : games) {
         double score = game.categories.find(category) == string::npos ? 0 : 15;
         score+=game.genres.find(genre) == string::npos ? 0 : 15;
@@ -74,7 +76,18 @@ std::vector<std::string> loadMostSimilarGames(std::vector<Game> games, string ge
         game.score = score;
     }
 
-    mergeSort(games);
+    auto start = chrono::steady_clock::now();
+    if (useQuickSort) {
+        quickSort(games, 0, (int)games.size() - 1);
+    } else {
+        mergeSort(games);
+    }
+    auto end = std::chrono::steady_clock::now();
+    if (sortMs) *sortMs = std::chrono::duration<double, std::milli>(end - start).count();
+
+
+    //mergeSort(games);
+    //quickSort(games,0, games.size() - 1);
     std::vector<std::string> mostSimilarGames;
     for (int i = 0; i < 20; i++) {
         mostSimilarGames.push_back(games[i].name);
